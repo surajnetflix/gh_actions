@@ -49,3 +49,7 @@ jobs:
           echo "JOB_VAR = $JOB_VAR"
           echo "STEP_VAR = $STEP_VAR"
           echo "SHARED_VAR = $SHARED_VAR"
+
+      - name: suraj: var context, print repo variables 
+        run: echo "{{ vars.okay }}"
+        
