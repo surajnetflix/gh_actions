@@ -1,0 +1,51 @@
+name: variable scope
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+# ✅ 1. Workflow-level (GLOBAL) variables
+env:
+  GLOBAL_VAR: "I am global"
+  SHARED_VAR: "Global value"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # ✅ 2. Job-level variables
+    env:
+      JOB_VAR: "I am job level"
+      SHARED_VAR: "Job overrides global"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ✅ Step 1: Access all variables
+      - name: Print all variables (Step 1)
+        run: |
+          echo "GLOBAL_VAR = $GLOBAL_VAR"
+          echo "JOB_VAR = $JOB_VAR"
+          echo "SHARED_VAR = $SHARED_VAR"
+
+      # ✅ 3. Step-level variables
+      - name: Step-level override
+        env:
+          STEP_VAR: "I am step level"
+          SHARED_VAR: "Step overrides job + global"
+        run: |
+          echo "GLOBAL_VAR = $GLOBAL_VAR"
+          echo "JOB_VAR = $JOB_VAR"
+          echo "STEP_VAR = $STEP_VAR"
+          echo "SHARED_VAR = $SHARED_VAR"
+
+      # ✅ Step 3: Check again after step override
+      - name: Print after step (Step 3)
+        run: |
+          echo "GLOBAL_VAR = $GLOBAL_VAR"
+          echo "JOB_VAR = $JOB_VAR"
+          echo "STEP_VAR = $STEP_VAR"
+          echo "SHARED_VAR = $SHARED_VAR"
